@@ -1,0 +1,17 @@
+{
+  "name": "단어의 제왕 퀴즈",
+  "short_name": "단어퀴즈",
+  "description": "한국어 뜻을 보고 영어 단어를 한 글자씩 맞히는 단어 퀴즈 게임",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f8faf6",
+  "theme_color": "#2a9d8f",
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

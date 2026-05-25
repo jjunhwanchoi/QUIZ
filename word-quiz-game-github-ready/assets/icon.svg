@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="단어의 제왕 아이콘">
+  <rect width="512" height="512" rx="88" fill="#2a9d8f"/>
+  <path d="M108 144h296v224H108z" fill="#fff7e0"/>
+  <path d="M154 202h204M154 260h204M154 318h126" fill="none" stroke="#457b9d" stroke-width="30" stroke-linecap="round"/>
+  <circle cx="358" cy="330" r="68" fill="#e76f51"/>
+  <path d="m326 328 24 25 45-58" fill="none" stroke="#fff" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

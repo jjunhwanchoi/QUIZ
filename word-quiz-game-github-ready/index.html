@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="한국어 뜻을 보고 영어 단어를 한 글자씩 맞히는 단어 퀴즈 게임">
+    <meta name="theme-color" content="#2a9d8f">
+    <title>단어의 제왕 퀴즈</title>
+    <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="topbar" aria-label="단어장 관리">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">W</span>
+          <div>
+            <h1>단어의 제왕</h1>
+          <p id="deckMeta">파일을 넣어 단어장을 시작하세요</p>
+          </div>
+        </div>
+        <div class="top-actions">
+          <label class="file-button">
+            <input id="fileInput" type="file" accept=".pdf,.hwpx,.hwp,.docx,.txt,.csv,.tsv">
+            <span aria-hidden="true">↥</span>
+            단어 파일 넣기
+          </label>
+          <button id="resetDeckBtn" type="button" class="ghost-button">
+            <span aria-hidden="true">×</span>
+            비우기
+          </button>
+        </div>
+      </section>
+
+      <section id="setupView" class="layout">
+        <aside class="control-panel" aria-label="퀴즈 시작">
+          <div class="score-strip">
+            <div>
+              <strong id="wordCount">0</strong>
+              <span>문제</span>
+            </div>
+            <div>
+              <strong id="readyCount">0</strong>
+              <span>준비됨</span>
+            </div>
+            <div>
+              <strong id="missingCount">0</strong>
+              <span>빈 답</span>
+            </div>
+          </div>
+          <button id="startBtn" type="button" class="primary-button">
+            <span aria-hidden="true">▶</span>
+            시작
+          </button>
+          <label class="toggle-row">
+            <input id="shuffleToggle" type="checkbox" checked>
+            섞어서 풀기
+          </label>
+          <p id="importStatus" class="status-line" role="status"></p>
+          <div class="mini-art" aria-hidden="true">
+            <svg viewBox="0 0 240 180">
+              <rect x="28" y="38" width="184" height="116" rx="8" fill="#fff7e0"/>
+              <path d="M52 68h136M52 98h136M52 128h86" stroke="#2a9d8f" stroke-width="10" stroke-linecap="round"/>
+              <circle cx="182" cy="126" r="24" fill="#e76f51"/>
+              <path d="M171 126l8 8 16-19" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </aside>
+
+        <section class="wordbook" aria-label="단어장">
+          <div class="wordbook-head">
+            <div>
+              <h2>단어장</h2>
+              <p>한국어 뜻과 영어 정답</p>
+            </div>
+            <button id="addRowBtn" type="button" class="ghost-button compact">
+              <span aria-hidden="true">＋</span>
+              추가
+            </button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">한국어</th>
+                  <th scope="col">영어</th>
+                  <th scope="col">삭제</th>
+                </tr>
+              </thead>
+              <tbody id="wordRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section id="gameView" class="game-view hidden" aria-label="퀴즈">
+        <div class="game-bar">
+          <div>
+            <p id="roundLabel">본 퀴즈</p>
+            <strong id="progressText">1 / 1</strong>
+          </div>
+          <div class="progress-track" aria-hidden="true">
+            <span id="progressFill"></span>
+          </div>
+          <button id="exitGameBtn" type="button" class="ghost-button compact">
+            <span aria-hidden="true">×</span>
+            나가기
+          </button>
+        </div>
+
+        <div class="quiz-grid">
+          <article class="quiz-card">
+            <span class="prompt-label">한국어</span>
+            <h2 id="promptText">단어</h2>
+            <div id="letterSlots" class="letter-slots" aria-label="영어 정답 입력"></div>
+            <div class="hint-row">
+              <span id="answerLength">0글자</span>
+              <span id="hintText" class="hint-text" aria-live="polite"></span>
+              <button id="skipBtn" type="button" class="ghost-button compact">
+                <span aria-hidden="true">?</span>
+                힌트 보기
+              </button>
+            </div>
+          </article>
+
+          <aside class="reaction-panel" aria-live="polite">
+            <div id="reactionArt" class="reaction-art"></div>
+            <strong id="reactionTitle">준비됐어요</strong>
+            <p id="reactionText">한 글자씩 입력하면 자동으로 넘어가요.</p>
+          </aside>
+        </div>
+      </section>
+
+      <section id="resultView" class="result-view hidden" aria-label="결과">
+        <div class="result-card">
+          <span id="resultBadge" class="result-badge">결과</span>
+          <h2 id="resultTitle">퀴즈 완료</h2>
+          <p id="resultScore">총 0개 중 0개 정답</p>
+          <div id="wrongList" class="wrong-list"></div>
+          <div class="result-actions">
+            <button id="reviewBtn" type="button" class="primary-button">
+              <span aria-hidden="true">↻</span>
+              오답 퀴즈
+            </button>
+            <button id="againBtn" type="button" class="ghost-button">
+              <span aria-hidden="true">▶</span>
+              다시 풀기
+            </button>
+            <button id="backToSetupBtn" type="button" class="ghost-button">
+              <span aria-hidden="true">←</span>
+              단어장
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
